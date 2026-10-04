@@ -16,7 +16,7 @@ namespace backend.Exceptions
 
     public sealed class UpstreamServiceException : Exception
     {
-        public UpstreamServiceException(string message, Exception innerException)
+        public UpstreamServiceException(string message, Exception? innerException = null)
             : base(message, innerException)
         {
         }

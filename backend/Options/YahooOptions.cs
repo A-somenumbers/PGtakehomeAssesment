@@ -10,7 +10,7 @@ namespace backend.Options
 
         public string BaseUrl { get; set; } = "https://query1.finance.yahoo.com/";
         [Required] // added user agent to avoid 403 forbidden errors from Yahoo Finance API
-        public string userAgent { get; set; } = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3";
+        public string UserAgent { get; set; } = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3";
         [Required]
         public string Interval { get; set; } = "15m";
         [Required]

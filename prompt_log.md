@@ -13,3 +13,7 @@
 - In backend/appsettings.json, add a reference to "https://query1.finance.yahoo.com/" labeled "yahoo".
 - In backend/Options, add YahooOptions.cs containing the Yahoo URL and settings.
 - In backend/Exceptions/StockExceptions.cs, add a SymbolNotFoundException with a Symbol property mapped to 404, and an UpstreamServiceException mapped to 502. Higher layers must not receive HttpRequestException, JsonException, or timeout exceptions directly.
+- Implement YahooChartMapper to map Yahoo responses to ChartData, detect symbol-not-found responses, require an exchange time zone, allow valid empty candle results, zip arrays by shortest length, skip incomplete rows, and convert Unix-second timestamps to DateTimeOffset.
+- Implement YahooFinanceClient to build the request URL from configuration, use a configured HttpClient, map 404 to SymbolNotFoundException, log and map other upstream failures to UpstreamServiceException, deserialize YahooChartResponse safely, and pass successful responses to YahooChartMapper.
+- Asked whether LogError or LogWarning is more appropriate for logging a non-success HTTP status from YahooFinanceClient.
+- Update error logging now that GlobalExceptionHandler exists.
