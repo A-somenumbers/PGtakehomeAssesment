@@ -1,5 +1,6 @@
 using backend.Clients;
 using backend.Options;
+using backend.Services;
 using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +18,7 @@ builder.Services.AddHttpClient<IYahooFinanceClient, YahooFinanceClient>((service
     client.DefaultRequestHeaders.UserAgent.ParseAdd(options.UserAgent);
     client.Timeout = TimeSpan.FromSeconds(options.TimeoutSeconds);
 });
+builder.Services.AddScoped<IStockSummaryService, StockSummaryService>();
 
 var app = builder.Build();
 

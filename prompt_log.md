@@ -17,3 +17,6 @@
 - Implement YahooFinanceClient to build the request URL from configuration, use a configured HttpClient, map 404 to SymbolNotFoundException, log and map other upstream failures to UpstreamServiceException, deserialize YahooChartResponse safely, and pass successful responses to YahooChartMapper.
 - Asked whether LogError or LogWarning is more appropriate for logging a non-success HTTP status from YahooFinanceClient.
 - Update error logging now that GlobalExceptionHandler exists.
+- Implement StockSummaryService to fetch chart data, return no summaries for no candles, resolve exchange timezone, group and sort candles by local trading date, aggregate average lows/highs and total volume, and round averages to four decimal places.
+- Write tests for YahooChartMapper, YahooFinanceClient, and StockSummaryService.
+- Write tests for YahooChartMapper, YahooFinanceClient, and StockSummaryService.
