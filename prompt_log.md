@@ -43,3 +43,4 @@
 - Replace the graph's bottom slider with three buttons representing a day, a week, and a month.
 - Change chart range buttons to 1 week, 2 weeks, 3 weeks, and 1 month.
 - Remove the 3-week chart range option.
+- Asked what the project requires to document in the README.
