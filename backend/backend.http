@@ -1,3 +1,15 @@
 @backend_HostAddress = http://localhost:5165
+GET {{backend_HostAddress}}/api/stocks/AAPL/daily-summary
+Accept: application/json
+
+### Symbol too long: 400
+GET {{backend_HostAddress}}/api/stocks/TOOLONGSYMBOL1/daily-summary
+
+### Unknown symbol: likely 404
+GET {{backend_HostAddress}}/api/stocks/ZZZZ/daily-summary
+
+### Health check
+GET {{backend_HostAddress}}/health
 
 ###
+
