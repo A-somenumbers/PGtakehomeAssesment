@@ -19,4 +19,5 @@
 - Update error logging now that GlobalExceptionHandler exists.
 - Implement StockSummaryService to fetch chart data, return no summaries for no candles, resolve exchange timezone, group and sort candles by local trading date, aggregate average lows/highs and total volume, and round averages to four decimal places.
 - Write tests for YahooChartMapper, YahooFinanceClient, and StockSummaryService.
+- Remove the backend .gitkeep files because they are no longer needed.
 - Write tests for YahooChartMapper, YahooFinanceClient, and StockSummaryService.
