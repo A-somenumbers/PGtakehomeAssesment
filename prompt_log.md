@@ -23,3 +23,17 @@
 - Write tests for YahooChartMapper, YahooFinanceClient, and StockSummaryService.
 - Implement StockEndpoints to define the stock summary URL, validate the symbol, pass work to the summary service with cancellation, and return HTTP responses.
 - Backend appears complete; move on to the frontend, but do not start any work yet.
+- In frontend/src, create an api folder containing stockApp.ts and errors.ts.
+- Help troubleshoot CORS for the frontend API request.
+- Implement useDailySummary to call the API client, track loading/done/fail request states, and expose one state object for UI rendering.
+- Connect useDailySummary to frontend/src/App.tsx.
+- Put the backend-matching stock symbol validation rule in frontend/src/utils/Symbols.ts.
+- Implement SymbolForm to trim and uppercase entered symbols, validate before search, show validation failures, and avoid calling the API for invalid input.
+- In SymbolForm, disable the button for empty input and while searching, and show "Searching..." during an active request.
+- Add noValidate to the SymbolForm form.
+- Implement StatusMessage to show idle, loading, empty-result, and API-error states, while rendering nothing for successful data.
+- Implement SummaryTable with day, low average, high average, and volume columns formatted using Intl.NumberFormat.
+- Update formatting so prices always show four decimals, volume shows whole numbers with thousands separators, and day uses a clearer date representation parsed at UTC midnight.
+- Create SummaryChart with separate low/high average lines, volume bars on a second y-axis, date x-axis, compact axis numbers, and full-precision hover values.
+- Asked to add zoom in/out controls to the chart.
+- Chose a draggable date-range selector below the chart as the zoom interaction.
