@@ -30,22 +30,25 @@ export default function SymbolForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate>
+    <form className="symbol-form" onSubmit={handleSubmit} noValidate>
       <label htmlFor="stock-symbol">Stock symbol</label>
-      <input
-        id="stock-symbol"
-        value={symbol}
-        onChange={(event) => {
-          setSymbol(event.target.value);
-          setValidationError("");
-        }}
-        autoComplete="off"
-        aria-invalid={validationError !== ""}
-        aria-describedby={validationError ? "symbol-error" : undefined}
-      />
-      <button type="submit" disabled={isLoading || symbol.trim().length === 0}>
-        {isLoading ? "Searching..." : "Search"}
-      </button>
+      <div className="search-controls">
+        <input
+          id="stock-symbol"
+          value={symbol}
+          onChange={(event) => {
+            setSymbol(event.target.value);
+            setValidationError("");
+          }}
+          autoComplete="off"
+          placeholder="e.g. AAPL"
+          aria-invalid={validationError !== ""}
+          aria-describedby={validationError ? "symbol-error" : undefined}
+        />
+        <button type="submit" disabled={isLoading || symbol.trim().length === 0}>
+          {isLoading ? "Searching..." : "View summary"}
+        </button>
+      </div>
       {validationError && (
         <p id="symbol-error" role="alert">
           {validationError}

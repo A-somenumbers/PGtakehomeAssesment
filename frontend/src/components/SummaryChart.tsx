@@ -1,6 +1,6 @@
+import { useState } from "react";
 import {
   Bar,
-  Brush,
   CartesianGrid,
   ComposedChart,
   Legend,
@@ -17,12 +17,42 @@ interface SummaryChartProps {
   summaries: DailySummary[];
 }
 
+type ChartRange = "1W" | "2W" | "1M";
+
+const chartRanges: { label: ChartRange; days: number | null }[] = [
+  { label: "1W", days: 7 },
+  { label: "2W", days: 14 },
+  { label: "1M", days: null },
+];
+
 export default function SummaryChart({ summaries }: SummaryChartProps) {
+  const [selectedRange, setSelectedRange] = useState<ChartRange>("1M");
+  const selectedDays = chartRanges.find(
+    (range) => range.label === selectedRange,
+  )?.days;
+  const visibleSummaries =
+    selectedDays === null || selectedDays === undefined
+      ? summaries
+      : summaries.slice(-selectedDays);
+
   return (
-    <div role="img" aria-label="Daily low and high average prices with volume">
+    <div aria-label="Daily low and high average prices with volume">
+      <div className="chart-range-controls" role="group" aria-label="Chart date range">
+        {chartRanges.map(({ label }) => (
+          <button
+            key={label}
+            type="button"
+            className={selectedRange === label ? "active" : ""}
+            aria-pressed={selectedRange === label}
+            onClick={() => setSelectedRange(label)}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
       <ResponsiveContainer width="100%" height={360}>
         <ComposedChart
-          data={summaries}
+          data={visibleSummaries}
           margin={{ top: 12, right: 12, bottom: 8, left: 12 }}
         >
           <CartesianGrid strokeDasharray="3 3" />
@@ -50,13 +80,6 @@ export default function SummaryChart({ summaries }: SummaryChartProps) {
             ]}
           />
           <Legend />
-          <Brush
-            dataKey="date"
-            height={28}
-            travellerWidth={10}
-            tickFormatter={formatChartDay}
-            ariaLabel="Select the date range to zoom the chart"
-          />
           <Bar
             yAxisId="volume"
             dataKey="totalVolume"

@@ -37,3 +37,9 @@
 - Create SummaryChart with separate low/high average lines, volume bars on a second y-axis, date x-axis, compact axis numbers, and full-precision hover values.
 - Asked to add zoom in/out controls to the chart.
 - Chose a draggable date-range selector below the chart as the zoom interaction.
+- Center the daily stock summary and use a more corporate font throughout the frontend.
+- Add spacing and dividers between rows in the daily stock summary table.
+- Give the entire frontend a sleeker visual look.
+- Replace the graph's bottom slider with three buttons representing a day, a week, and a month.
+- Change chart range buttons to 1 week, 2 weeks, 3 weeks, and 1 month.
+- Remove the 3-week chart range option.

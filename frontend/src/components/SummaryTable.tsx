@@ -7,7 +7,7 @@ interface SummaryTableProps {
 
 export default function SummaryTable({ summaries }: SummaryTableProps) {
   return (
-    <table>
+    <table className="summary-table">
       <caption>Daily stock summary</caption>
       <thead>
         <tr>
