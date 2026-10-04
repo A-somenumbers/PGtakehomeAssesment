@@ -22,3 +22,4 @@
 - Remove the backend .gitkeep files because they are no longer needed.
 - Write tests for YahooChartMapper, YahooFinanceClient, and StockSummaryService.
 - Implement StockEndpoints to define the stock summary URL, validate the symbol, pass work to the summary service with cancellation, and return HTTP responses.
+- Backend appears complete; move on to the frontend, but do not start any work yet.
