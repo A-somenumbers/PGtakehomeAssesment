@@ -1,4 +1,6 @@
 using backend.Clients;
+using backend.Endpoints;
+using backend.Middleware;
 using backend.Options;
 using backend.Services;
 using Microsoft.Extensions.Options;
@@ -8,6 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddProblemDetails();
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.Configure<YahooOptions>(
     builder.Configuration.GetSection(YahooOptions.SectionName));
 builder.Services.AddHttpClient<IYahooFinanceClient, YahooFinanceClient>((serviceProvider, client) =>
@@ -23,9 +27,11 @@ builder.Services.AddScoped<IStockSummaryService, StockSummaryService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseExceptionHandler();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
 
 app.UseHttpsRedirection();
+app.MapStockEndpoints();
