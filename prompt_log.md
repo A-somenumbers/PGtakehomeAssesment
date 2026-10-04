@@ -11,3 +11,5 @@
 - In the backend models, create a chart data object containing a string Symbol, a string ExchangeTimeZoneID, and a read-only list of candles.
 - Change the two model types, Candle and ChartData, to sealed records.
 - In backend/appsettings.json, add a reference to "https://query1.finance.yahoo.com/" labeled "yahoo".
+- In backend/Options, add YahooOptions.cs containing the Yahoo URL and settings.
+- In backend/Exceptions/StockExceptions.cs, add a SymbolNotFoundException with a Symbol property mapped to 404, and an UpstreamServiceException mapped to 502. Higher layers must not receive HttpRequestException, JsonException, or timeout exceptions directly.

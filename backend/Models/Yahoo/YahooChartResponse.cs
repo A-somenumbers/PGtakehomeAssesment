@@ -5,14 +5,29 @@ namespace backend.Models.Yahoo
     public sealed record YahooChartResponse(YahooChart Chart);
 
     public sealed record YahooChart(
-        IreadOnlyList<YahooChartResult> Result,
-        YahooChartError? Error);
+        IReadOnlyList<YahooChartResult> Result,
+        YahooError? Error);
+
+    public sealed record YahooError(
+        string? Code,
+        string? Description);
 
     public sealed record YahooChartResult(
         YahooMeta Meta,
         IReadOnlyList<long> Timestamp,
         YahooIndicators? Indicators);
 
+    public sealed record YahooMeta(
+        string? Symbol,
+        string? ExchangeTimezoneName);
+
+    public sealed record YahooIndicators(
+        IReadOnlyList<YahooQuote> Quote);
+
     
+    public sealed record YahooQuote(
+        IReadOnlyList<decimal> High,
+        IReadOnlyList<decimal> Low,
+        IReadOnlyList<long> Volume);
     
 }
