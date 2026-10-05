@@ -1,47 +1,85 @@
 # Prompt Log
 
-## 2026-10-04
-
+## Backend
 - From this point on, keep a prompt_log.md of everything I ask
   - strictly so I could have this be updated without putting much thought into it
 - Do not start work on anything yet, but for this project we are building a full stack app. For the backend, we are building a self hosted C# .NET 9 Web API that uses "https://query1.finance.yahoo.com/" for our data. Through this we expose an endpoint that: takes a stock symbol as a parameter, queries intraday data from the past month, groups these results by day, and returns JSON in the following format. Keep this in memory.
+  - prompting the copilot agent on what is to be done
 - Still don't do anything yet; this is just for memory. For the frontend, we are building a React UI that consumes the backend, lets the user enter a stock symbol, displays results in a table or chart, and handles errors such as invalid symbols and failed requests.
+  - cont. from last bullet
 - Ground rules: work in smaller steps and test before moving on; never fabricate results; use decimal for prices and long for volume; pass CancellationToken ct through every async method.
+  - Ground rules established, I wanted accuracy and I wanted the work to be thourough.
 - Start with the backend layout; create folders for clients, endpoints, models, services, options, middleware, and exceptions.
+  - created the folders here early on just so I could keep everything organized. The Agent also generated gitkeep files which I later removed
 - In backend/Models/Candle.cs, create a candle object that contains a DateTimeOffset, decimal high and low, and long volume.
+  - Created Candle objects that would essentially allow me to see a summary of a stocks price over a set interval (in this project it was 15m)
 - In the backend models, create a chart data object containing a string Symbol, a string ExchangeTimeZoneID, and a read-only list of candles.
+  - This object would take the cleaned up Yahoo result from the client to the summary service. It contains a symbol, a timezone, and a list of candles 
 - Change the two model types, Candle and ChartData, to sealed records.
+  - since these objects didn't need to be inherited & they really only record data
 - In backend/appsettings.json, add a reference to "https://query1.finance.yahoo.com/" labeled "yahoo".
+  - this holds the values the Yahoo Client would need, makes it easier to make changes without recompiling
 - In backend/Options, add YahooOptions.cs containing the Yahoo URL and settings.
+  - Essentially where the URL and it's settings live, YahooFinanceClient recives this
 - In backend/Exceptions/StockExceptions.cs, add a SymbolNotFoundException with a Symbol property mapped to 404, and an UpstreamServiceException mapped to 502. Higher layers must not receive HttpRequestException, JsonException, or timeout exceptions directly.
+  - Defining custom Exception types
 - Implement YahooChartMapper to map Yahoo responses to ChartData, detect symbol-not-found responses, require an exchange time zone, allow valid empty candle results, zip arrays by shortest length, skip incomplete rows, and convert Unix-second timestamps to DateTimeOffset.
+  - This is what converts the raw response into ChartData
 - Implement YahooFinanceClient to build the request URL from configuration, use a configured HttpClient, map 404 to SymbolNotFoundException, log and map other upstream failures to UpstreamServiceException, deserialize YahooChartResponse safely, and pass successful responses to YahooChartMapper.
+  - This is what actually makes a network call
 - Asked whether LogError or LogWarning is more appropriate for logging a non-success HTTP status from YahooFinanceClient.
+  - I realized in this class, that they we're writing down error logs in the file when they should be global
 - Update error logging now that GlobalExceptionHandler exists.
+  - fixing the error previously stated
 - Implement StockSummaryService to fetch chart data, return no summaries for no candles, resolve exchange timezone, group and sort candles by local trading date, aggregate average lows/highs and total volume, and round averages to four decimal places.
+  - Takes the clean candles from the client & turns them into one summary per trading day
 - Write tests for YahooChartMapper, YahooFinanceClient, and StockSummaryService.
+  - these 3 benefit from having tests
 - Remove the backend .gitkeep files because they are no longer needed.
-- Write tests for YahooChartMapper, YahooFinanceClient, and StockSummaryService.
+  - removed the gitkeeps from earlier
 - Implement StockEndpoints to define the stock summary URL, validate the symbol, pass work to the summary service with cancellation, and return HTTP responses.
+  - Defines the url called and returns a response based on the validity
 - Backend appears complete; move on to the frontend, but do not start any work yet.
+  - finishing up backend 
+
+## Frontend
 - In frontend/src, create an api folder containing stockApp.ts and errors.ts.
+  - these were created to test if the connection between the front & back were working
 - Help troubleshoot CORS for the frontend API request.
+  - Cors error that was quickly fixed
 - Implement useDailySummary to call the API client, track loading/done/fail request states, and expose one state object for UI rendering.
+  - What happens between a user searching & the page showing a result
 - Connect useDailySummary to frontend/src/App.tsx.
+  - making it so this actually displays in the app
 - Put the backend-matching stock symbol validation rule in frontend/src/utils/Symbols.ts.
+  - Matching up a validation rule found in the backend
 - Implement SymbolForm to trim and uppercase entered symbols, validate before search, show validation failures, and avoid calling the API for invalid input.
+  - Actual form that validates a symbol before searching for it
 - In SymbolForm, disable the button for empty input and while searching, and show "Searching..." during an active request.
+  - prevent accidental entry
 - Add noValidate to the SymbolForm form.
+  - turns off browser validation popups
 - Implement StatusMessage to show idle, loading, empty-result, and API-error states, while rendering nothing for successful data.
+  - provides some feedback to the user
 - Implement SummaryTable with day, low average, high average, and volume columns formatted using Intl.NumberFormat.
+  - lists the summary of a stock in a table
 - Update formatting so prices always show four decimals, volume shows whole numbers with thousands separators, and day uses a clearer date representation parsed at UTC midnight.
+  - Fixing up formating to make it cleaner
 - Create SummaryChart with separate low/high average lines, volume bars on a second y-axis, date x-axis, compact axis numbers, and full-precision hover values.
+  - created a table to give clearer readings
 - Asked to add zoom in/out controls to the chart.
+  - Made it so you can see the data over a certain range of time 
 - Chose a draggable date-range selector below the chart as the zoom interaction.
+  - 2nd prompt for the zoom feature
 - Center the daily stock summary and use a more corporate font throughout the frontend.
+  - Cleaning up the UI
 - Add spacing and dividers between rows in the daily stock summary table.
+  - giving the entire thing a more clean look
 - Give the entire frontend a sleeker visual look.
+  - Gave the UI a bit more of a polished look
 - Replace the graph's bottom slider with three buttons representing a day, a week, and a month.
+  - decided that buttons would be better for this specific type of application
 - Change chart range buttons to 1 week, 2 weeks, 3 weeks, and 1 month.
+  - Changed the buttons to give more useful data
 - Remove the 3-week chart range option.
-- Asked what the project requires to document in the README.
+  - Removed for redundancy
